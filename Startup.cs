@@ -39,7 +39,7 @@ namespace WebApplication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -80,6 +80,12 @@ namespace WebApplication
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var mariaContext = scope.ServiceProvider.GetRequiredService<MariaContext>();
+                mariaContext.Database.Migrate();
+            }
         }
     }
 }
