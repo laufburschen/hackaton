@@ -15,6 +15,13 @@ module.exports = function (config) {
     client: {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
+    browsers: ['ChromiumNoSandbox'],
+    customLaunchers: {
+      ChromiumNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-translate', '--disable-extensions']
+      },
+    },
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, './coverage/ClientApp'),
       reports: ['html', 'lcovonly', 'text-summary'],
@@ -25,7 +32,6 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
     singleRun: false,
     restartOnFileChange: true
   });
