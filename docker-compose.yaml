@@ -42,6 +42,7 @@ services:
       WirVsVirus:
             ipv4_address: 192.168.10.30
             ipv6_address: 192:168:10::30
+            
   certbot:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     image: certbot/certbot
