@@ -25,7 +25,7 @@ namespace WebApplication
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<PersonContext>(options =>
+            services.AddDbContext<MariaContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             // In production, the Angular files will be served from this directory

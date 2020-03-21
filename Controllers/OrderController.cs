@@ -22,7 +22,7 @@ namespace WebApplication.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
+        [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();
@@ -34,5 +34,6 @@ namespace WebApplication.Controllers
             })
             .ToArray();
         }
+
     }
 }
