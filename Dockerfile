@@ -5,8 +5,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-RUN apt-get update
-RUN apt-get install iputils-ping
+RUN apt-get update -yq 
+RUN apt-get install iputils-ping -yq 
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src

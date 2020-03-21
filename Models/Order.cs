@@ -6,7 +6,7 @@ namespace WebApplication.Models
     [Table("orders")]
     public class Order
     {
-        [Column("product")]
+        [Column("id")]
         [Key]
         public string id {get; set;}
 
@@ -16,7 +16,7 @@ namespace WebApplication.Models
         [Column("items")]
         public int items  {get; set;}
         
-        [Column("items")]
+        [Column("max_price_per_item")]
         public float maximum_price_per_item  {get; set;}
 
         [Column("comment")]

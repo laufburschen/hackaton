@@ -7,6 +7,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Nah^Rauko1ach2k
       MYSQL_DATABASE: standard
+    ports:
+      - 3306:3306
 
 
   dotnet:
