@@ -8,6 +8,12 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["WebApplication.csproj", ""]
+# install NodeJS 13.x
+# see https://github.com/nodesource/distributions/blob/master/README.md#deb
+RUN apt-get update -yq 
+RUN apt-get install curl gnupg -yq 
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN apt-get install -y nodejs
 RUN dotnet restore "./WebApplication.csproj"
 COPY . .
 WORKDIR "/src/."
