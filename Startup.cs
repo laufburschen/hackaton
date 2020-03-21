@@ -1,4 +1,3 @@
-
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,8 +29,7 @@ namespace WebApplication
 
             services.AddDbContext<MariaContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                    mysqlOptions =>
-                        mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 1), ServerType.MariaDb))));
+                    mysqlOptions => mysqlOptions.ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
