@@ -53,6 +53,7 @@ namespace WebApplication.Controllers
             _context.Orders.Add(
                 new Order {
                     id = id,
+                    product = createOrderArgs.product,
                     comment = createOrderArgs.comment,
                     items = createOrderArgs.items,
                     maximum_price_per_item = createOrderArgs.maximum_price_per_item
@@ -61,19 +62,5 @@ namespace WebApplication.Controllers
 
             return "coming_soon";
         }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
-
     }
 }
