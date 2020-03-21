@@ -15,7 +15,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: Nah^Rauko1ach2k
     volumes:
-      - ./data/db:/var/lib/mysql
+      - database
     networks:
       WirVsVirus:
             ipv4_address: 192.168.10.10
@@ -48,3 +48,6 @@ services:
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+
+volumes:
+  database:
