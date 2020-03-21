@@ -6,8 +6,6 @@ namespace WebApplication.DbContext
     public class MariaContext: Microsoft.EntityFrameworkCore.DbContext
     {
 
-            //entities
-            public DbSet<Order> Persons { get; set; }
-
+        public DbSet<Order> Orders { get; set; }
     }
 }
