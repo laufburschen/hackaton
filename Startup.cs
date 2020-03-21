@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql;
 using Pomelo.EntityFrameworkCore.Extensions;
+using WebApplication.DbContext;
 
 namespace WebApplication
 {
@@ -23,8 +25,8 @@ namespace WebApplication
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<PersonContext>(options =>
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
