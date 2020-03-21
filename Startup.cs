@@ -27,8 +27,12 @@ namespace WebApplication
             services.AddControllersWithViews();
             services.AddEntityFrameworkMySql();
 
+            var connctionString = Configuration.GetConnectionString("DefaultConnection").
+                Replace("%DB_SERVER%", Environment.GetEnvironmentVariable("DB_SERVER") ?? "db").
+                Replace("%DB_PASSWORD%", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Nah^Rauko1ach2k");
+
             services.AddDbContext<MariaContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                options.UseMySql(connctionString,
                     mysqlOptions => mysqlOptions.ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
 
             // In production, the Angular files will be served from this directory
