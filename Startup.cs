@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using WebApplication.DbContext;
@@ -14,12 +15,33 @@ namespace WebApplication
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup( IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
+
+        private string GetPatchedConnectionString(ILogger logger)
+        {
+            var original = Configuration.GetConnectionString("DefaultConnection");
+            if (logger != null)
+            {   
+                logger.LogWarning($"original configuration string = {original}");
+            }
+
+            var patched = Configuration.GetConnectionString("DefaultConnection").
+                Replace("%DB_SERVER%", Environment.GetEnvironmentVariable("DB_SERVER") ?? "db").
+                Replace("%DB_PASSWORD%", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Nah^Rauko1ach2k");
+
+            if (logger != null)
+            {   
+                logger.LogWarning($"patched configuration string = {patched}");
+            }
+            
+            return patched;
+        }
+
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -27,12 +49,9 @@ namespace WebApplication
             services.AddControllersWithViews();
             services.AddEntityFrameworkMySql();
 
-            var connctionString = Configuration.GetConnectionString("DefaultConnection").
-                Replace("%DB_SERVER%", Environment.GetEnvironmentVariable("DB_SERVER") ?? "db").
-                Replace("%DB_PASSWORD%", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Nah^Rauko1ach2k");
 
             services.AddDbContext<MariaContext>(options =>
-                options.UseMySql(connctionString,
+                options.UseMySql(GetPatchedConnectionString(null),
                     mysqlOptions => mysqlOptions.ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
 
             // In production, the Angular files will be served from this directory
@@ -43,8 +62,10 @@ namespace WebApplication
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            GetPatchedConnectionString(logger);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
