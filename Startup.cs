@@ -1,4 +1,3 @@
-
 using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -10,8 +9,6 @@ using Microsoft.Extensions.Hosting;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using WebApplication.DbContext;
-using System;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace WebApplication
 {
@@ -32,12 +29,7 @@ namespace WebApplication
 
             services.AddDbContext<MariaContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-<<<<<<< HEAD
                     mysqlOptions => mysqlOptions.ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
-=======
-                    mysqlOptions =>
-                        mysqlOptions.ServerVersion(new ServerVersion(new Version(10, 5, 1), ServerType.MariaDb))));
->>>>>>> a90b4db5b5f9803877087bc0b32dcf640ab92eb6
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
