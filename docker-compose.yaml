@@ -21,7 +21,7 @@ services:
             ipv4_address: 192.168.10.10
             ipv6_address: 192:168:10::10
   dotnet:
-    image: eliazdevelops/deinlaufbursche
+    image: eliazdevelops/deinlaufbursche:latest
     restart: always
     environment:
       - ASPNETCORE_URLS=http://192.168.10.20:80/
