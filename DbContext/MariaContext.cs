@@ -5,6 +5,10 @@ namespace WebApplication.DbContext
 {
     public class MariaContext: Microsoft.EntityFrameworkCore.DbContext
     {
+        public MariaContext(DbContextOptions<MariaContext> options) : base(options)
+        {
+
+        }
 
         public DbSet<Order> Orders { get; set; }
     }
