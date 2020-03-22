@@ -2,7 +2,7 @@
 
 ## Infrastruktur
 
-Siehe Diagramm
+![Architektur](./infrastructure.png)
 
 ## Software
 
