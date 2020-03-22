@@ -38,7 +38,7 @@ Preis angeben kann. Ebenfalls besteht die Möglichkeit einen Kommentar zu hinter
 Es können bei Bedarf weitere Produkte hinzugefügt werden. Schlussendlich kann die Bestellung abgeschickt werden und der Nutzer landet auf einer Übersichtsseite mit allen Bestelldetails.
 
 #### Ablauf Offer-Help-Flow
-TDB
+Wählt ein Nutzer auf der Startseite den Punkt "Ich möchte helfen" wird dieser in den Lieferantenworkflow weitergeleitet. Hier bekommt er Offene Bestellungen angezeigt. Hier kann er sich direkt Details zu den in den Bestellungen vorhandenen Produkten anzeigen lassen und kann sich dazu Entscheiden diese Bestellung zu liefern. Über einen weiteren Button kann er sich die Bestellungen anzeigen lassen die er ausliefern will. 
 
 #### Ablauf Merchant-Flow
 TBD
