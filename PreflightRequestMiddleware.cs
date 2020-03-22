@@ -42,3 +42,4 @@ namespace Web.Middlewares
             return builder.UseMiddleware<UsePreflightRequestHandler>();
         }
     }
+}
