@@ -3,6 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WebApplication
 {
@@ -19,15 +21,17 @@ namespace WebApplication
     }
     private Task BeginInvoke(HttpContext context)
     {
-      context.Response.Headers.Add("Access-Control-Allow-Credentials", new[] { "true" });
-      context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept, Athorization, ActualUserOrImpersonatedUserSamAccount, IsImpersonatedUser" });
-      context.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET, POST, PUT, DELETE, OPTIONS" });
-      if (context.Request.Method == HttpMethod.Options.Method)
-      {
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
-        return context.Response.WriteAsync("OK");
-      }
-      return Next.Invoke(context);
+      if (context.Request.Method == "OPTIONS")
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { (string)context.Request.Headers["Origin"] });
+                context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept" });
+                context.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET, POST, PUT, DELETE, OPTIONS" });
+                context.Response.Headers.Add("Access-Control-Allow-Credentials", new[] { "true" });
+                context.Response.StatusCode = 200;
+                return context.Response.WriteAsync("OK");
+            }
+
+            return Next.Invoke(context);
     }
   }
 
