@@ -1,27 +1,27 @@
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Web.Middlewares
+namespace WebApplication
 {
-    public class OptionsMiddleware
+  public class PreflightRequestMiddleware
+  {
+    private readonly RequestDelegate Next;
+    public PreflightRequestMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate _next;
-
-        public OptionsMiddleware(RequestDelegate next)
-        {
-            _next = next;
-        }
-
-        public Task Invoke(HttpContext context)
-        {
-            return BeginInvoke(context);
-        }
-
-        private Task BeginInvoke(HttpContext context)
-        {
-            if (context.Request.Method == "OPTIONS")
+      Next = next;
+    }
+    public Task Invoke(HttpContext context)
+    {
+      return BeginInvoke(context);
+    }
+    private Task BeginInvoke(HttpContext context)
+    {
+      if (context.Request.Method == "OPTIONS")
             {
                 context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { (string)context.Request.Headers["Origin"] });
                 context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept" });
@@ -31,15 +31,15 @@ namespace Web.Middlewares
                 return context.Response.WriteAsync("OK");
             }
 
-            return _next.Invoke(context);
-        }
+            return Next.Invoke(context);
     }
+  }
 
-    public static class OptionsMiddlewareExtensions
+  public static class PreflightRequestExtensions
+  {
+    public static IApplicationBuilder UsePreflightRequestHandler(this IApplicationBuilder builder)
     {
-        public static IApplicationBuilder UsePreflightRequestHandler(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<UsePreflightRequestHandler>();
-        }
+      return builder.UseMiddleware<PreflightRequestMiddleware>();
     }
+  }
 }
