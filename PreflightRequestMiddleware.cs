@@ -1,41 +1,44 @@
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
-namespace WebApplication
+namespace Web.Middlewares
 {
-  public class PreflightRequestMiddleware
-  {
-    private readonly RequestDelegate Next;
-    public PreflightRequestMiddleware(RequestDelegate next)
+    public class OptionsMiddleware
     {
-      Next = next;
-    }
-    public Task Invoke(HttpContext context)
-    {
-      return BeginInvoke(context);
-    }
-    private Task BeginInvoke(HttpContext context)
-    {
-      context.Response.Headers.Add("Access-Control-Allow-Credentials", new[] { "true" });
-      context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept, Athorization, ActualUserOrImpersonatedUserSamAccount, IsImpersonatedUser" });
-      context.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET, POST, PUT, DELETE, OPTIONS" });
-      if (context.Request.Method == HttpMethod.Options.Method)
-      {
-        context.Response.StatusCode = (int)HttpStatusCode.OK;
-        return context.Response.WriteAsync("OK");
-      }
-      return Next.Invoke(context);
-    }
-  }
+        private readonly RequestDelegate _next;
 
-  public static class PreflightRequestExtensions
-  {
-    public static IApplicationBuilder UsePreflightRequestHandler(this IApplicationBuilder builder)
-    {
-      return builder.UseMiddleware<PreflightRequestMiddleware>();
+        public OptionsMiddleware(RequestDelegate next)
+        {
+            _next = next;
+        }
+
+        public Task Invoke(HttpContext context)
+        {
+            return BeginInvoke(context);
+        }
+
+        private Task BeginInvoke(HttpContext context)
+        {
+            if (context.Request.Method == "OPTIONS")
+            {
+                context.Response.Headers.Add("Access-Control-Allow-Origin", new[] { (string)context.Request.Headers["Origin"] });
+                context.Response.Headers.Add("Access-Control-Allow-Headers", new[] { "Origin, X-Requested-With, Content-Type, Accept" });
+                context.Response.Headers.Add("Access-Control-Allow-Methods", new[] { "GET, POST, PUT, DELETE, OPTIONS" });
+                context.Response.Headers.Add("Access-Control-Allow-Credentials", new[] { "true" });
+                context.Response.StatusCode = 200;
+                return context.Response.WriteAsync("OK");
+            }
+
+            return _next.Invoke(context);
+        }
     }
-  }
-}
+
+    public static class OptionsMiddlewareExtensions
+    {
+        public static IApplicationBuilder UsePreflightRequestHandler(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<UsePreflightRequestHandler>();
+        }
+    }
