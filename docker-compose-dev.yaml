@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Nah^Rauko1ach2k
+      MYSQL_DATABASE: standard
+    ports:
+      - 3306:3306
+
+
+  dotnet:
+    image: eliazdevelops/deinlaufbursche:latest
+    restart: always
+    environment:
+      - ASPNETCORE_URLS=http://+:80/
+    ports:
+      - 1234:80
