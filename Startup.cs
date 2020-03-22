@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql.Storage;
 using WebApplication.DbContext;
@@ -15,7 +16,7 @@ namespace WebApplication
 {
     public class Startup
     {
-        public Startup( IConfiguration configuration)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -26,7 +27,7 @@ namespace WebApplication
         {
             var original = Configuration.GetConnectionString("DefaultConnection");
             if (logger != null)
-            {   
+            {
                 logger.LogWarning($"original configuration string = {original}");
             }
 
@@ -35,10 +36,10 @@ namespace WebApplication
                 Replace("%DB_PASSWORD%", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "Nah^Rauko1ach2k");
 
             if (logger != null)
-            {   
+            {
                 logger.LogWarning($"patched configuration string = {patched}");
             }
-            
+
             return patched;
         }
 
@@ -63,6 +64,11 @@ namespace WebApplication
             {
                 configuration.RootPath = "ClientApp/dist/ClientApp";
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auch ein Laufbursche braucht REST", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,6 +76,15 @@ namespace WebApplication
         {
             GetPatchedConnectionString(logger);
 
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Auch ein Laufbursche braucht REST");
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
