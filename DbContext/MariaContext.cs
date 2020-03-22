@@ -11,7 +11,7 @@ namespace WebApplication.DbContext
         }
 
         public DbSet<Order> Orders { get; set; }
-       public DbSet<Offer> Offers { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
          
     }
 }

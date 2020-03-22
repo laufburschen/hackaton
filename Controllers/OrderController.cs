@@ -5,12 +5,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using WebApplication.DbContext;
 using WebApplication.Models;
 
 namespace WebApplication.Controllers
 {
     public class OrderCreateDto
+    {
+        public OrderCreateDto()
+        {
+            items = new List<OrderItemCreateDto>();
+        }
+
+        public List<OrderItemCreateDto> items { get; set; }
+    }
+
+
+    public class OrderItemCreateDto
     {
         public string product {get; set;}
 
@@ -21,7 +33,22 @@ namespace WebApplication.Controllers
         public string comment  {get; set;}  
     }
 
-    public class OrderGetDto : OrderCreateDto
+
+    public class OrderGetDto
+    {
+        public OrderGetDto()
+        {
+            items = new List<OrderItemGetDto>();
+        }
+
+        public string id {get; set;}
+
+        [JsonProperty]
+        public List<OrderItemGetDto> items { get; set; }
+
+    }
+
+    public class OrderItemGetDto : OrderItemCreateDto
     {
         public string id {get; set;}
     }
@@ -31,13 +58,21 @@ namespace WebApplication.Controllers
         public static OrderGetDto CreateGetDto(this Order order)
         {
             return new  OrderGetDto {
-                id = order.id,
-                product = order.product,
-                comment = order.comment,
-                items = order.items,
-                maximum_price_per_item = order.maximum_price_per_item
+                id = order.id
             };
         }
+
+        public static OrderItemGetDto CreateGetItemDto(this OrderItem orderItem)
+        {
+            return new  OrderItemGetDto {
+                id = orderItem.id,
+                product = orderItem.product,
+                comment = orderItem.comment,
+                items = orderItem.items,
+                maximum_price_per_item = orderItem.maximum_price_per_item
+            };
+        }
+
     }
 
 
@@ -57,15 +92,22 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<List<OrderGetDto>> Create([FromBody][Required]List<OrderCreateDto> createOrderArgs)
+        public async Task<OrderGetDto> Create([FromBody][Required]List<OrderItemCreateDto> createOrderArgs)
         {
-            var orders = new List<OrderGetDto>();
+            var order = new Order {
+                id = $"order_{Guid.NewGuid():N}"
+            };
+
+            var orderGetDto = order.CreateGetDto();
+
+            await _context.Orders.AddAsync(order);
 
             foreach (var singleCreateOrder in createOrderArgs)
             {
-                var id = $"order_{Guid.NewGuid():N}";
-                var order = new Order
+                var id = $"orderItem_{Guid.NewGuid():N}";
+                var orderItem = new OrderItem
                 {
+                    order_id = order.id,
                     id = id,
                     product = singleCreateOrder.product,
                     comment = singleCreateOrder.comment,
@@ -73,13 +115,13 @@ namespace WebApplication.Controllers
                     maximum_price_per_item = singleCreateOrder.maximum_price_per_item
                 };
 
-                _context.Orders.Add(order);
-                orders.Add(order.CreateGetDto());
+                await _context.OrderItems.AddAsync(orderItem);
+
+                orderGetDto.items.Add(orderItem.CreateGetItemDto());
             }
-           
             await _context.SaveChangesAsync();
 
-            return orders;
+            return orderGetDto;
         }
 
         [HttpGet]
