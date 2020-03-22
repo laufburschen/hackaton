@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebApplication.DbContext;
@@ -57,9 +58,13 @@ namespace WebApplication.Controllers
     {
         public static OrderGetDto CreateGetDto(this Order order)
         {
-            return new  OrderGetDto {
+            var orderGetDto = new OrderGetDto {
                 id = order.id
             };
+            if (order.Items != null) {
+                orderGetDto.items.AddRange(order.Items.Select(_ => _.CreateGetItemDto()));
+            }
+            return orderGetDto;
         }
 
         public static OrderItemGetDto CreateGetItemDto(this OrderItem orderItem)
@@ -125,21 +130,20 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<OrderGetDto>> Get()
+        public async Task<IEnumerable<OrderGetDto>> List()
         {
-            return _context.Orders.ToList().Select(_ => _.CreateGetDto()).ToArray();
+            var orders = await _context.Orders.Include(_ => _.Items).ToListAsync();
+            return orders.Select(_ => _.CreateGetDto());
         }
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<IEnumerable<OrderGetDto>> Get(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            var foundOrder = _context.Orders.FirstOrDefault(_ => _.id == id);
-            if (foundOrder != null)
-            {
-                return new [] { foundOrder.CreateGetDto() };
-            }
-            return BadRequest();
+            var order = await _context.Orders.Where(_ => _.id == id).Include(_ => _.Items).SingleOrDefaultAsync();
+            if (order != null)
+                return Ok(order.CreateGetDto());
+            return NotFound();
         }
     }
 }
