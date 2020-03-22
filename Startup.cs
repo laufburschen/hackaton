@@ -52,7 +52,9 @@ namespace WebApplication
 
             services.AddDbContext<MariaContext>(options =>
                 options.UseMySql(GetPatchedConnectionString(null),
-                    mysqlOptions => mysqlOptions.ServerVersion(new Version(10, 5, 0), ServerType.MariaDb)));
+                    mysqlOptions => mysqlOptions.
+                        ServerVersion(new Version(10, 5, 0), ServerType.MariaDb).
+                        EnableRetryOnFailure()));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
