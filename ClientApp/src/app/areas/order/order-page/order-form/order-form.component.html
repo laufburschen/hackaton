@@ -1,0 +1,29 @@
+<form *ngIf="form" [formGroup]="form">
+  <div class="form-wrapper">
+    <mat-form-field>
+      <mat-label>Produkt</mat-label>
+      <input matInput type="text" formControlName="product">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Anzahl</mat-label>
+      <input matInput type="number" formControlName="items">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Stückpreis</mat-label>
+      <input matInput type="number" formControlName="maxPricePerItem">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Kommentar</mat-label>
+      <textarea rows="5" matInput formControlName="comment"></textarea>
+    </mat-form-field>
+  </div>
+</form>
+<div class="button-wrapper">
+  <button mat-fab (click)="cancel()" [color]="'warn'">
+    <span class="material-icons">clear</span>
+  </button>
+  <button mat-fab (click)="addOrderPosition()" [color]="'primary'" [disabled]="form.invalid">
+    <span class="material-icons">check</span>
+  </button>
+</div>
+

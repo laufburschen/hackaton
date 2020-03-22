@@ -1,0 +1,28 @@
+<div class="order-page-container">
+  <ng-container *ngIf="state | async as state">
+    <div class="container" [ngSwitch]="state">
+      <section class="section" *ngSwitchCase="states.Unknown">
+        <p>Loading State</p>
+      </section>
+
+      <section class="section" *ngSwitchCase="states.ProductSelection">
+        <app-order-form (addOrderItem)="addOrderItem($event)"></app-order-form>
+      </section>
+
+      <section class="section" *ngSwitchCase="states.Overview">
+        <div class="overview-wrapper">
+          <app-item-list [order]="order"></app-item-list>
+          <!-- Bestellbestätigung BEGIN -->
+          <button *ngIf="order.orderItems.length > 0" (click)="openDialog()" mat-raised-button [color]="'accent'">Jetzt bestellen!</button>
+          <div *ngIf="confirmedOrder">Order Confirmed</div>
+          <!-- Bestellbestätigung END -->
+        </div>
+      </section>
+
+      <section class="section" *ngSwitchCase="states.Complete">
+        <app-orders-overview></app-orders-overview>
+        <p>Complete State</p>
+      </section>
+    </div>
+  </ng-container>
+</div>
