@@ -1,10 +1,10 @@
 export interface Order {
-  id?: number;
-  orderItems: OrderItem[]
+  id?: string;
+  orderItems: OrderItem[];
 }
 
 export interface OrderItem {
-  id?: number;
+  id?: string;
   product: string;
   items: number;
   maxPricePerItem: number;

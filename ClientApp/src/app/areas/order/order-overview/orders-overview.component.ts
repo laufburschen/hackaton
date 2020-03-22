@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {OrdersService} from '../order-page/orders.service';
-import {Order} from '../order.model';
+import {OrdersService} from '../../../orders.service';
+import {Order} from '../../../order.model';
 
 @Component({
   selector: 'app-orders-overview',
@@ -9,12 +9,15 @@ import {Order} from '../order.model';
   styleUrls: ['./orders-overview.component.scss'],
 })
 export class OrdersOverviewComponent implements OnInit {
-  private orders: Observable<Order[]>;
+  orders: Observable<Order[]>;
+  panelOpenState = false;
+  public columnsToDisplay: String[];
 
   constructor(
     private readonly ordersService: OrdersService,
   ) {
     this.getOrders();
+    this.columnsToDisplay = ["product", "items", "maxPricePerItem", "comment"];
   }
 
   ngOnInit(): void {

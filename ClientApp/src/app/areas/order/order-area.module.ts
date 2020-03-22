@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatCardModule} from '@angular/material/card';
+import {MatAccordion, MatExpansionModule} from '@angular/material/expansion';
+import {MatListModule} from '@angular/material/list';
 import { OrderAreaRoutingModule } from './order-area-routing.module';
 import { OrderPageComponent } from './order-page/order-page.component';
 import { OrderFormComponent } from './order-page/order-form/order-form.component';
@@ -26,9 +29,12 @@ import { OrdersOverviewComponent } from './order-overview/orders-overview.compon
     MatTableModule,
     MatSortModule,
     MatButtonModule,
+    MatCardModule,
     MatDialogModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatListModule,
+    MatExpansionModule,
   ],
   declarations: [
     OrderPageComponent,

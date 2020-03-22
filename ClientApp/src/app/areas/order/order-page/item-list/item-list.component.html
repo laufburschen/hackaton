@@ -21,6 +21,8 @@
     <tr mat-row *matRowDef="let product; columns: columnsToDisplay"></tr>
   </table>
 
+  <div *ngIf="!(order.orderItems.length > 0)" class="nothingToShow">Keine Einträge vorhanden!</div>
+
   <div class="material-button">
     <button mat-fab (click)="addProduct()" [color]="'primary'">
       <span class="material-icons">add</span>

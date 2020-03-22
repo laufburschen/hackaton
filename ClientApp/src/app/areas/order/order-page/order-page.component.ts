@@ -1,10 +1,11 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Order, OrderItem } from '../order.model';
+import {IOrderResponse} from '../../../core/backend-api/gateways/orders.gateway';
+import { Order, OrderItem } from '../../../order.model';
 import { OrderStates, OrderStateService } from './order-state.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmOrderModalContentComponent } from '../confirm-order-modal-content/confirm-order-modal-content.component';
-import { OrdersService } from './orders.service';
+import { OrdersService } from '../../../orders.service';
 import { switchMap } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -69,7 +70,7 @@ export class OrderPageComponent implements AfterViewInit{
         return this.ordersService.postOrder(this.order);
       })
     ). subscribe(
-      (result: boolean | undefined) => {
+      (result: boolean | IOrderResponse[]) => {
         if (!!result) {
           this.snackBar.open('Deine Bestellung wurde aufgenommen!');
           this.completeOrder();

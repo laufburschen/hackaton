@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { OrderStateService } from '../order-state.service';
-import { Order } from '../../order.model';
+import { Order } from '../../../../order.model';
 
 @Component({
   selector: 'app-item-list',

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { OrderItem } from '../../order.model';
+import { OrderItem } from '../../../../order.model';
 import { OrderStateService } from '../order-state.service';
 
 @Component({

@@ -1,0 +1,15 @@
+.details-wrapper {
+  display: grid;
+  grid-auto-columns: auto;
+  row-gap: 8px;
+}
+
+.material-button {
+  position: fixed;
+  bottom: 5vw;
+  right: 5vw;
+}
+
+button {
+  margin-top: 8px
+}

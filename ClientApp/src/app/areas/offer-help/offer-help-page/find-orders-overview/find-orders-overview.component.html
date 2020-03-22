@@ -1,0 +1,42 @@
+<h3>Offene Lieferungen</h3>
+<div *ngIf="orders$ | async as orders; else noOrdersAvailable">
+  <ng-container *ngIf="orders.length > 0; else noOrdersAvailable">
+    <ng-container *ngFor="let order of orders">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          {{order.id}}
+        </mat-expansion-panel-header>
+        <mat-list>
+          <ng-container *ngFor="let orderItem of order.orderItems">
+            <mat-list-item style="height: 150px">
+              <div class="details-wrapper">
+                <div>
+                  <strong>Produkt: </strong><span>{{orderItem.product}}</span>
+                </div>
+                <div>
+                  <strong>Anzahl: </strong> <span>{{orderItem.items}}</span>
+                </div>
+                <div>
+                  <strong>Maximaler Stückpreis: </strong> <span>{{orderItem.maxPricePerItem}}</span>
+                </div>
+                <div>
+                  <strong>Kommentar: </strong> <span>{{orderItem.comment}}</span>
+                </div>
+              </div>
+            </mat-list-item>
+            <mat-divider></mat-divider>
+          </ng-container>
+        </mat-list>
+        <button mat-flat-button color="primary" (click)="claimOrder(order)">Erledigen!</button>
+      </mat-expansion-panel>
+    </ng-container>
+  </ng-container>
+</div>
+<ng-template #noOrdersAvailable>
+  <p>Ruh dich aus, es gibt derzeit keine offenen Anfragen.</p>
+</ng-template>
+<div class="material-button">
+  <button mat-fab (click)="changeState()" [color]="'primary'">
+    <span class="material-icons">done</span>
+  </button>
+</div>
