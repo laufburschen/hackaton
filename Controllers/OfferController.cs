@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebApplication.DbContext;
@@ -48,6 +49,7 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<List<OfferGetDto>> Create([FromBody][Required]List<OfferCreateDto> createOfferArgs)
         {
             var Offers = new List<OfferGetDto>();
@@ -70,12 +72,14 @@ namespace WebApplication.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<OfferGetDto>> Get()
         {
             return _context.Offers.ToList().Select(_ => _.CreateGetDto()).ToArray();
         }
 
         [HttpGet]
+        [Authorize]
         [Route("{id}")]
         public ActionResult<IEnumerable<OfferGetDto>> Get(string id)
         {
