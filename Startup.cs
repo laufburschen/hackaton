@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,10 +45,25 @@ namespace WebApplication
             return patched;
         }
 
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.
+                    WithOrigins("https://deinlaufbursche.de", "https://localhost:5001").
+                    AllowAnyHeader().
+                    AllowAnyMethod();
+                });
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddControllersWithViews();
             services.AddEntityFrameworkMySql();
 
@@ -111,6 +128,8 @@ namespace WebApplication
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseSpa(spa =>
             {
