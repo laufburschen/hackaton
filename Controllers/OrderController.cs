@@ -57,20 +57,31 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<string> Create([FromBody][Required]OrderCreateDto createOrderArgs)
+        public async Task<List<Order>> Create([FromBody][Required]List<OrderCreateDto> createOrderArgs)
         {
-            var id = $"order_{Guid.NewGuid():N}";
-            _context.Orders.Add(
-                new Order {
+            List<Order> orders = new List<Order>();
+
+
+            foreach (var singleCreateOrder in createOrderArgs)
+            {
+                var id = $"order_{Guid.NewGuid():N}";
+                var order = new Order
+                {
                     id = id,
-                    product = createOrderArgs.product,
-                    comment = createOrderArgs.comment,
-                    items = createOrderArgs.items,
-                    maximum_price_per_item = createOrderArgs.maximum_price_per_item
-                });
+                    product = singleCreateOrder.product,
+                    comment = singleCreateOrder.comment,
+                    items = singleCreateOrder.items,
+                    maximum_price_per_item = singleCreateOrder.maximum_price_per_item
+                };
+
+
+                _context.Orders.Add(order);
+                orders.Add(order);
+            }
+           
             await _context.SaveChangesAsync();
 
-            return id;
+            return orders;
         }
 
         [HttpGet]
