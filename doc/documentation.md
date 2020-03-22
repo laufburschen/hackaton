@@ -67,7 +67,5 @@ TBD
 * dockerhub (wirvsvirusgs/deinlaufbursche)), automatisierter Build bei Änderung in github
 * auf VM wird ein docker-compose benötigt; dieses muss bei Bedarf manuell neu gestartet werden
 
-Deployment über docker image auf das Produktsystem.
-
 * Visual Studio Code & Professional
 * Postman  
