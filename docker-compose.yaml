@@ -13,7 +13,8 @@ services:
     image: mariadb
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Nah^Rauko1ach2k
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=standard
     volumes:
       - database
     networks:
@@ -21,10 +22,16 @@ services:
             ipv4_address: 192.168.10.10
             ipv6_address: 192:168:10::10
   dotnet:
-    image: eliazdevelops/deinlaufbursche:latest
+    depends_on:
+      - db
+#    image: eliazdevelops/deinlaufbursche
+    image: wirvsvirusgs/deinlaufbursche
     restart: always
     environment:
+      - DB_SERVER=${DB_SERVER}
+      - DB_PASSWORD=${DB_PASSWORD}
       - ASPNETCORE_URLS=http://192.168.10.20:80/
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       WirVsVirus:
             ipv4_address: 192.168.10.20
@@ -42,13 +49,11 @@ services:
       WirVsVirus:
             ipv4_address: 192.168.10.30
             ipv6_address: 192:168:10::30
-            
   certbot:
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     image: certbot/certbot
     volumes:
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-
 volumes:
-  database:
+   database:
