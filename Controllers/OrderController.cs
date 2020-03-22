@@ -57,10 +57,9 @@ namespace WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<List<Order>> Create([FromBody][Required]List<OrderCreateDto> createOrderArgs)
+        public async Task<List<OrderGetDto>> Create([FromBody][Required]List<OrderCreateDto> createOrderArgs)
         {
-            List<Order> orders = new List<Order>();
-
+            var orders = new List<OrderGetDto>();
 
             foreach (var singleCreateOrder in createOrderArgs)
             {
@@ -74,9 +73,8 @@ namespace WebApplication.Controllers
                     maximum_price_per_item = singleCreateOrder.maximum_price_per_item
                 };
 
-
                 _context.Orders.Add(order);
-                orders.Add(order);
+                orders.Add(order.CreateGetDto());
             }
            
             await _context.SaveChangesAsync();
