@@ -18,7 +18,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@backend/oauth
+    - uses: actions/checkout@backend_first_blood
     - name: Publish to Registry
       uses: HurricanKai/Publish-Docker-Github-Action@master
       with:
