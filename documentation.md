@@ -12,16 +12,18 @@
 
 * ASP.NET Core / Kestrel
 * OAuth (vorbereitet)
-* Entity Framework (Code First)
+* REST API mit Swagger
+* Entity Framework Core (Code First)
 * Maria DB
+* Docker
 
 ### Entwicklung
 
+#### CI/CD
+
 * github (https://github.com/laufburschen/hackaton)
 * dockerhub (wirvsvirusgs/deinlaufbursche)), automatisierter Build bei Änderung in github
-* auf VM wird ein docker-compose benötigt; dieses muss bei Bedarf manuell neu gestartet werden
-
-Deployment über docker image auf das Produktsystem.
+* der letzte Schritt besteht darin, auf der VM das docker-compose bei Bedarf manuell neu zu starten
 
 * Visual Studio Code & Professional
 * Postman  
