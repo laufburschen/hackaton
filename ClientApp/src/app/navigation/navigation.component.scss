@@ -1,0 +1,38 @@
+header {
+  height: 80px;
+  padding: 20px;
+  display: flex;
+  background: #00A6FB;
+  color: #fff;
+  align-items: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+  a.app-name {
+    font-size: 22px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  a.nav-bar {
+    text-decoration: none;
+  }
+  
+  .nav {
+    margin-left: auto;
+
+
+    .menu-button {
+      background: none;
+      border: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+
+      .mat-icon {
+        color: #fff;
+        font-size: 32px;
+        height: 32px;
+        width: 32px;;
+      }
+    }
+  }
+}

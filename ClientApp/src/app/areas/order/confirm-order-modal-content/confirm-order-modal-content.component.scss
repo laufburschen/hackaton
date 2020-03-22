@@ -1,0 +1,22 @@
+.question {
+  font-size: 18px;
+  padding: 30px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+@media (max-width: 767px) {
+  .question {
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .buttons {
+    flex-direction: column;
+    button:first-child {
+      margin-bottom: 10px;
+    }
+  }
+}

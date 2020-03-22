@@ -1,0 +1,15 @@
+:host {
+  display: grid;
+  grid-auto-rows: auto;
+  grid-row-gap: 8px;
+}
+
+table {
+    width: 100%;
+}
+
+.material-button {
+  position: fixed;
+  bottom: 5vw;
+  right: 5vw;
+}
