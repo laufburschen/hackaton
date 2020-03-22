@@ -56,7 +56,7 @@ namespace WebApplication
                 builder =>
                 {
                     builder.
-                    WithOrigins("https://deinlaufbursche.de", "https://localhost:5001").
+                    WithOrigins("https://deinlaufbursche.de").
                     AllowAnyHeader().
                     AllowAnyMethod();
                 });
