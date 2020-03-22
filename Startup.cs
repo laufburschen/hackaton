@@ -93,6 +93,7 @@ namespace WebApplication
         public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             GetPatchedConnectionString(logger);
+            app.UsePreflightRequestHandler();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
